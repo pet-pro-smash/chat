@@ -1,1 +1,1 @@
-# chat
+# example architecture

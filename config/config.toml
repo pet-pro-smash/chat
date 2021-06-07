@@ -1,0 +1,12 @@
+[server_http]
+host = "127.0.0.1"
+port = "8080"
+max_header_bytes = 1
+
+[db]
+title = "postgres"
+host = "127.0.0.1"
+port = "5432"
+username = "postgres"
+db_name = "chat-db"
+ssl_mode = "disable"
