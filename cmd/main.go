@@ -11,10 +11,10 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/pet-pro-smash/chat/internal/app/cli"
 	"github.com/pet-pro-smash/chat/internal/app/config"
-	"github.com/pet-pro-smash/chat/internal/app/handler"
 	"github.com/pet-pro-smash/chat/internal/app/repository"
-	"github.com/pet-pro-smash/chat/internal/app/server_http"
-	"github.com/pet-pro-smash/chat/internal/app/service"
+	"github.com/pet-pro-smash/chat/internal/app/server_http/handler"
+	server_http "github.com/pet-pro-smash/chat/internal/app/server_http/server"
+	"github.com/pet-pro-smash/chat/internal/app/server_http/service"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
 )
