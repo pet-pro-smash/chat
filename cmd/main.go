@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -50,7 +51,7 @@ func main() {
 	// Ожидание на получение сигналов от системы для завершения работы
 	go func() {
 		done := make(chan os.Signal, 1)
-		signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+		signal.Notify(done, syscall.SIGINT, syscall.SIGTERM)
 		<-done
 		cancel()
 	}()
@@ -115,4 +116,6 @@ func main() {
 	if err := db.Close(); err != nil {
 		logrus.Error(err)
 	}
+
+	fmt.Println("Работа завершена!!!")
 }
