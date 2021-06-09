@@ -2,11 +2,13 @@ package repository
 
 import "fmt"
 
+// интерфейс работы с базами данных, методы
 type DBConnector interface {
 	AddUser()
 	Close() error
 }
 
+// конфиг соединения с БД
 type ConfigConnect struct {
 	Title    string
 	Host     string
@@ -17,6 +19,7 @@ type ConfigConnect struct {
 	SSLMode  string
 }
 
+// инициализация соединения с БД
 func NewDBConnect(c ConfigConnect) (DBConnector, error) {
 	switch c.Title {
 	case "postgres":

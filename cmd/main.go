@@ -16,7 +16,6 @@ import (
 	server_http "github.com/pet-pro-smash/chat/internal/app/server_http/server"
 	"github.com/pet-pro-smash/chat/internal/app/server_http/service"
 	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
 )
 
 func main() {
@@ -37,7 +36,7 @@ func main() {
 		SSLMode:  c.GetString("db.ssl_mode"),
 	})
 	if err != nil {
-		logrus.Fatalf("ошибка при при подключении к бд: %s", err.Error())
+		logrus.Fatalf("ошибка при при подключении к бд: %v", err)
 	}
 
 	// Инициализация зависимостей
@@ -60,21 +59,27 @@ func main() {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		// Инициализация http сервера
-		srv := server_http.NewServer(server_http.Config{
-			Host:           viper.GetString("server.host"),
-			Port:           viper.GetString("server.port"),
+
+		// конфиг для сервера
+		sc := server_http.Config{
+			Host:           c.GetString("server_http.host"),
+			Port:           c.GetString("server_http.port"),
 			Handler:        handlers.InitRoutes(),
-			MaxHeaderBytes: viper.GetInt("server.max_header_bytes"),
-		})
+			MaxHeaderBytes: c.GetInt("server_http.max_header_bytes"),
+		}
+
+		// Инициализация http сервера
+		srv := server_http.NewServer(sc)
 
 		logrus.Infoln("запуск http сервера")
 
+		// запуск сервера, блокирующая команда
 		if err = srv.Start(ctx); err != nil {
 			if err == http.ErrServerClosed {
 				logrus.Println("HTTP сервер остановленн")
+				return
 			}
-			logrus.Fatalf("произошла ошибка при запуске http сервера: %s", err.Error())
+			logrus.Fatalf("произошла ошибка при запуске http сервера: %v", err)
 		}
 
 	}()

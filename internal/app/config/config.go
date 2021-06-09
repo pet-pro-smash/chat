@@ -3,7 +3,6 @@ package config
 import (
 	"fmt"
 
-	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
 
@@ -17,9 +16,9 @@ func LoadConfig() (*viper.Viper, error) {
 	}
 
 	// Завершение приложения при ошибке в загрузке переменных окружения
-	if err := godotenv.Load(); err != nil {
-		return nil, fmt.Errorf("ошибка при загрузке переменных окружения: %s", err.Error())
-	}
+	// if err := godotenv.Load(); err != nil {
+	// 	return nil, fmt.Errorf("ошибка при загрузке переменных окружения: %s", err.Error())
+	// }
 
 	return v, nil
 }
