@@ -16,7 +16,7 @@ func NewHandler(service service.Service) Handler {
 }
 
 // middleware проверка куки и сессии
-func session() gin.HandlerFunc {
+func (h *Handler) session() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// проверка куки
 		// проверка сессии
@@ -25,10 +25,13 @@ func session() gin.HandlerFunc {
 }
 
 func (h Handler) InitRoutes() *gin.Engine {
+
+	// режим запуска gin
+	gin.SetMode(gin.ReleaseMode)
 	// Созданеие роутера
 	router := gin.New()
 
-	router.Use(session())
+	router.Use(h.session())
 
 	router.GET("/", func(c *gin.Context) {
 		c.String(http.StatusOK, "pet-project")
