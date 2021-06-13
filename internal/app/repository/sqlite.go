@@ -6,10 +6,10 @@ func NewSqliteDB(c ConfigConnect) (*sqlite, error) {
 	return &sqlite{}, nil
 }
 
-func (ms *sqlite) AddUser() {
+func (ms *sqlite) CreateUser() {
 
 }
 
-func (ms *sqlite) Close() error {
+func (ms *sqlite) DBClose() error {
 	return nil
 }
