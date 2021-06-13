@@ -36,7 +36,7 @@ func NewDBConnect(c ConfigConnect) (DBConnector, error) {
 		}
 		return m, nil
 	case "sqlite":
-		l, err := NewMysqlDB(c)
+		l, err := NewSqliteDB(c)
 		if err != nil {
 			return nil, err
 		}
