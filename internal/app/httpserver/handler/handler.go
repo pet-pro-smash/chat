@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,10 +21,12 @@ func (h *Handler) session() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// проверка куки
 		// проверка сессии
+		fmt.Println("MIDDLEWARE")
 		c.Next()
 	}
 }
 
+// Инициализация роутера
 func (h Handler) InitRoutes() *gin.Engine {
 
 	// режим запуска gin
