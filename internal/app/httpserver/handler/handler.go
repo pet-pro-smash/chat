@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,16 +13,6 @@ type Handler struct {
 
 func NewHandler(service service.Service) Handler {
 	return Handler{service: service}
-}
-
-// middleware проверка куки и сессии
-func (h *Handler) session() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// проверка куки
-		// проверка сессии
-		fmt.Println("MIDDLEWARE")
-		c.Next()
-	}
 }
 
 // Инициализация роутера
