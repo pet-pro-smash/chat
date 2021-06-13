@@ -4,8 +4,8 @@ import "fmt"
 
 // интерфейс работы с базами данных, методы
 type DBConnector interface {
-	AddUser()
-	Close() error
+	Authorization
+	DBClose() error
 }
 
 // конфиг соединения с БД

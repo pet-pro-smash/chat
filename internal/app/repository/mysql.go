@@ -6,10 +6,10 @@ func NewMysqlDB(c ConfigConnect) (*mysql, error) {
 	return &mysql{}, nil
 }
 
-func (ms *mysql) AddUser() {
+func (ms *mysql) CreateUser() {
 
 }
 
-func (ms *mysql) Close() error {
+func (ms *mysql) DBClose() error {
 	return nil
 }

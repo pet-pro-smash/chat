@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/pet-pro-smash/chat/internal/app/server_http/service"
+	"github.com/pet-pro-smash/chat/internal/app/httpserver/service"
 )
 
 type Handler struct {

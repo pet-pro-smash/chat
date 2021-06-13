@@ -12,10 +12,10 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/pet-pro-smash/chat/internal/app/cli"
 	"github.com/pet-pro-smash/chat/internal/app/config"
+	server_http "github.com/pet-pro-smash/chat/internal/app/httpserver"
+	"github.com/pet-pro-smash/chat/internal/app/httpserver/handler"
+	"github.com/pet-pro-smash/chat/internal/app/httpserver/service"
 	"github.com/pet-pro-smash/chat/internal/app/repository"
-	"github.com/pet-pro-smash/chat/internal/app/server_http/handler"
-	server_http "github.com/pet-pro-smash/chat/internal/app/server_http/server"
-	"github.com/pet-pro-smash/chat/internal/app/server_http/service"
 	"github.com/sirupsen/logrus"
 )
 
@@ -113,7 +113,7 @@ func main() {
 	wg.Wait()
 
 	// Закрытие соедниния с базой данных
-	if err := db.Close(); err != nil {
+	if err := db.DBClose(); err != nil {
 		logrus.Error(err)
 	}
 

@@ -19,11 +19,11 @@ func NewPostgresDB(cfg ConfigConnect) (*postgres, error) {
 	return &postgres{db: db}, err
 }
 
-func (p *postgres) AddUser() {
+func (p *postgres) CreateUser() {
 	log.Println("postgres AddUser")
 }
 
-func (p *postgres) Close() error {
+func (p *postgres) DBClose() error {
 	if err := p.db.Close(); err != nil {
 		return fmt.Errorf("произошла ошибка при закрытии соединения к бд: %s", err.Error())
 	}
