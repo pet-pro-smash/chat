@@ -9,32 +9,32 @@ import (
 	"sync"
 	"syscall"
 
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/pet-pro-smash/chat/internal/app/cli"
-	"github.com/pet-pro-smash/chat/internal/app/config"
-	server_http "github.com/pet-pro-smash/chat/internal/app/httpserver"
+	httpSrv "github.com/pet-pro-smash/chat/internal/app/httpserver"
 	"github.com/pet-pro-smash/chat/internal/app/httpserver/handler"
 	"github.com/pet-pro-smash/chat/internal/app/httpserver/service"
 	"github.com/pet-pro-smash/chat/internal/app/repository"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 func main() {
 	// Завершение приложения при ошибке в инициализации конфигурационного файла
-	c, err := config.LoadConfig()
-	if err != nil {
-		logrus.Fatal(err)
+	if err := initConfig(); err != nil {
+		logrus.Fatalf("произошла ошибка при иниализации конфигурационного файла: %s", err.Error())
 	}
 
 	// Инициализация бд postgres и завершение приложения при ошибке в подключении к бд
 	db, err := repository.NewDBConnect(repository.ConfigConnect{
-		Title:    c.GetString("db.title"),
-		Host:     c.GetString("db.host"),
-		Port:     c.GetString("db.port"),
-		Username: c.GetString("db.username"),
+		Title:    viper.GetString("db.title"),
+		Host:     viper.GetString("db.host"),
+		Port:     viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
 		Password: os.Getenv("POSTGRES_PASSWORD"),
-		DBName:   c.GetString("db.db_name"),
-		SSLMode:  c.GetString("db.ssl_mode"),
+		DBName:   viper.GetString("db.db_name"),
+		SSLMode:  viper.GetString("db.ssl_mode"),
 	})
 	if err != nil {
 		logrus.Fatalf("ошибка при при подключении к бд: %v", err)
@@ -62,15 +62,15 @@ func main() {
 		defer wg.Done()
 
 		// конфиг для сервера
-		sc := server_http.Config{
-			Host:           c.GetString("server_http.host"),
-			Port:           c.GetString("server_http.port"),
+		srvConfig := httpSrv.Config{
+			Host:           viper.GetString("server_http.host"),
+			Port:           viper.GetString("server_http.port"),
 			Handler:        handlers.InitRoutes(),
-			MaxHeaderBytes: c.GetInt("server_http.max_header_bytes"),
+			MaxHeaderBytes: viper.GetInt("server_http.max_header_bytes"),
 		}
 
 		// Инициализация http сервера
-		srv := server_http.NewServer(sc)
+		srv := httpSrv.NewServer(srvConfig)
 
 		logrus.Infoln("запуск http сервера")
 
@@ -118,4 +118,16 @@ func main() {
 	}
 
 	fmt.Println("Работа завершена!!!")
+}
+
+func initConfig() error {
+	viper.AddConfigPath("config/")
+	viper.SetConfigName("config")
+	if err := viper.ReadInConfig(); err != nil {
+		return err
+	}
+	if err := godotenv.Load(); err != nil {
+		return err
+	}
+	return nil
 }
