@@ -1,4 +1,4 @@
-package server_http
+package httpserver
 
 import (
 	"context"
@@ -17,7 +17,6 @@ type Server struct {
 	httpServer *http.Server
 }
 
-// создаем сервер
 func NewServer(cfg Config) Server {
 
 	return Server{
@@ -30,18 +29,12 @@ func NewServer(cfg Config) Server {
 		}}
 }
 
-// запуск сервера
-func (s *Server) Start(ctx context.Context) error {
-
-	// остановка сервера если появляется сигнал
-	go func() {
-		<-ctx.Done()
-		s.httpServer.Shutdown(context.Background())
-	}()
+// Запуск сервера
+func (s *Server) Start() error {
 	return s.httpServer.ListenAndServe()
 }
 
-// мягкая остановка сервера
-func (s *Server) shutdown(ctx context.Context) error {
+// Плавная остановка сервера
+func (s *Server) Shutdown(ctx context.Context) error {
 	return s.httpServer.Shutdown(ctx)
 }

@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"github.com/pet-pro-smash/chat/internal/app/httpserver/service"
 )
@@ -15,19 +13,13 @@ func NewHandler(service service.Service) Handler {
 	return Handler{service: service}
 }
 
-// Инициализация роутера
-func (h Handler) InitRoutes() *gin.Engine {
+// InitRoutes | Инициализация роутера
+func (h *Handler) InitRoutes() *gin.Engine {
 
 	// режим запуска gin
 	gin.SetMode(gin.ReleaseMode)
 	// Созданеие роутера
 	router := gin.New()
-
-	router.Use(h.session())
-
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "pet-project")
-	})
 
 	auth := router.Group("/auth")
 	{

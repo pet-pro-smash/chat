@@ -1,7 +1,14 @@
 package repository
 
+import "github.com/pet-pro-smash/chat/internal/app/httpserver/model"
+
+const (
+	usersTable string = "users"
+)
+
 type Authorization interface {
-	CreateUser()
+	CreateUser(user model.User) (int, error)
+	GetUser(email string) (model.User, error)
 }
 
 type Repository struct {
@@ -9,5 +16,5 @@ type Repository struct {
 }
 
 func NewRepository(db DBConnector) Repository {
-	return Repository{Authorization: NewAuthorizationSQL(db)}
+	return Repository{Authorization: NewAuthSQL(db)}
 }
